@@ -46,4 +46,4 @@ pre-commit:
   commands:
     api-check:
       root: backend/
-      run: npx biome check --write src/
+      run: npx biome check src/
