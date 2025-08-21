@@ -6,4 +6,4 @@ task.get("/", (c) => {
   return c.json({ task: true });
 });
 
-export default task
+export default task;
