@@ -14,25 +14,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Task {
-  id          Int      @id @default(autoincrement())
-  uuid        String   @default(uuid(7))
-  title       String   @db.VarChar(255)
-  description String?
-  position    Int      @default(0)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+model User {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique @db.VarChar(100)
+  passwordHash String   @db.VarChar(255) @map("password_hash")
+  passwordSalt String   @db.VarChar(255) @map("password_salt")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  statusId Int    @map("status_id")
-  status   Status @relation(fields: [statusId], references: [id], onDelete: Restrict)
+  memos Memo[]
+
+  @@map("users")
 }
 
-model Status {
-  id        Int     @id @default(autoincrement())
-  name      String  @db.VarChar(255)
-  color     String
-  position  Int     @default(0)
-  isDefault Boolean @default(false) @map("is_default")
+model Memo {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid(7))
+  title     String   @db.VarChar(255)
+  content   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  tasks Task[]
+  userId Int  @map("user_id")
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  linkedFrom MemoLink[] @relation("SourceMemo")
+  linkedTo   MemoLink[] @relation("TargetMemo")
+
+  @@map("memos")
+}
+
+model MemoLink {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  sourceId Int @map("source_id")
+  targetId Int @map("target_id")
+
+  source Memo @relation("SourceMemo", fields: [sourceId], references: [id], onDelete: Cascade)
+  target Memo @relation("TargetMemo", fields: [targetId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, targetId])
+  @@map("memo_links")
 }
