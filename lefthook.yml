@@ -10,5 +10,5 @@ pre-push:
   commands:
     api-test:
       root: backend/
-      run: npx vitest run --changed
+      run: npx vitest run --related
       stage_fixed: true
