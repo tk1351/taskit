@@ -1,4 +1,8 @@
-import type { BaseErrorType, ErrorType } from "../../types/error/error.js";
+import type {
+  BaseErrorType,
+  ErrorType,
+  ServiceError,
+} from "../../types/error/error.js";
 
 export function throwError<T extends ErrorType>(
   type: T,
@@ -8,4 +12,11 @@ export function throwError<T extends ErrorType>(
     type,
     message,
   } satisfies BaseErrorType<T>;
+}
+
+export function throwResultError(error: ServiceError): never {
+  throw {
+    ok: false,
+    error,
+  };
 }

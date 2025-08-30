@@ -11,7 +11,6 @@ describe("Testing user repository", () => {
       const result = await createUser({
         username: "testuser",
         passwordHash: "testpasswordhash",
-        passwordSalt: "testpasswordsalt",
       });
       expect(result.username).toBe("testuser");
     });
@@ -20,7 +19,6 @@ describe("Testing user repository", () => {
       await createUser({
         username: "duplicate",
         passwordHash: "hash1",
-        passwordSalt: "salt1",
       });
 
       // 同じusernameで再度作成してエラーを期待
@@ -28,7 +26,6 @@ describe("Testing user repository", () => {
         createUser({
           username: "duplicate",
           passwordHash: "hash2",
-          passwordSalt: "salt2",
         }),
       ).rejects.toMatchObject({
         type: "UNIQUE_CONSTRAINT_ERROR",
@@ -44,7 +41,6 @@ describe("Testing user repository", () => {
         createUser({
           username: "testuser",
           passwordHash: "hash",
-          passwordSalt: "salt",
         }),
       ).rejects.toMatchObject({
         type: "INTERNAL_SERVER_ERROR",

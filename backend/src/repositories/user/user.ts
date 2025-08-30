@@ -14,7 +14,6 @@ export const createUser = async (
       data,
       omit: {
         passwordHash: true,
-        passwordSalt: true,
       },
     });
     return result;
