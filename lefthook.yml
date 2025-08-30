@@ -4,6 +4,8 @@ pre-commit:
     api-check:
       root: backend/
       run: npx biome check src/
+      skip_output:
+        - success
 
 pre-push:
   parallel: true
@@ -12,3 +14,5 @@ pre-push:
       root: backend/
       run: npx vitest run --changed HEAD~1
       stage_fixed: true
+      skip_output:
+        - success
