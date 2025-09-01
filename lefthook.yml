@@ -6,6 +6,11 @@ pre-commit:
       run: npx biome check src/
       skip_output:
         - success
+    front-check:
+      root: frontend/
+      run: npx biome check src/
+      skip_output:
+        - success
 
 pre-push:
   parallel: true
